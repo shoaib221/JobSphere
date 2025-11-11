@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 
 import { useState, useEffect } from 'react';
-import { useAxios } from '../axios/axios';
+
 import { toast } from 'react-toastify';
 import { PrivateRoute } from '../auth/auth';
 import { DownWindowContext } from '../Nav/context';
+import { AuthContext } from '../auth/context';
 
 export const AddJob = () => {
-    const { axiosInstance } = useAxios();
+    const { axiosInstance }  = useContext(AuthContext)
     const [title, setTitle] = useState("");
     const [photo, setPhoto] = useState("");
     const [summary, setSummary] = useState("");

@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useAxios } from '../axios/axios';
 import { toast } from 'react-toastify';
 import '../Box/box.css';
 import { useNavigate } from 'react-router-dom';
 import { DownWindowContext } from '../Nav/context';
+import { AuthContext } from '../auth/context';
 
 
 export const Job = ({ job }) => {
     const navigate = useNavigate()
 
     return (
-        <div className='border h-[15rem] p-2 box-1' >
+        <div className='h-[15rem] p-2 box-1' >
             <div className='w-[90%] h-[7rem]' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
             <div className='font-bold text-xl' >{job.title} </div>
             <div> {job.summary} </div>
@@ -24,12 +24,13 @@ export const Job = ({ job }) => {
 
 
 export const AllJobs = () => {
-    const { axiosInstance } = useAxios()
+    const { axiosInstance } = useContext(AuthContext)
     const [jobs, setJobs] = useState(null)
     const { DownWindow, DownWindowTag } = useContext(DownWindowContext)
     const [categorySearch, setCategory] = useState("")
     const [display, setDisplay] = useState([])
     const [sort, setSort] = useState("")
+    const { user } = useContext(AuthContext)
 
 
     useEffect(() => {
@@ -53,13 +54,15 @@ export const AllJobs = () => {
             setDisplay(jobs);
             return;
         }
-        console.log("aha")
-        let temp = jobs.filter(x => x.category.toLowerCase().includes(param.toLowerCase()));
+        //console.log("aha")
+        let temp = [...jobs]
+        temp = temp.filter(x => x.category.toLowerCase().includes(param.toLowerCase()));
         setDisplay(temp)
     }
 
     function SortDisplay(event) {
         let param = event.target.value;
+        setCategory("")
         setSort(param)
         let abc = [...jobs];
 
@@ -67,16 +70,19 @@ export const AllJobs = () => {
 
         if (param === 'latest') {
             abc.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // newest first
+            
         } else if (param === 'oldest') {
             abc.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)); // oldest first
+            
         }
         else if( param === "incomplete" ) {
             abc = abc.filter( x => x.acceptedBy === 'none' )
-        } else {
-            setDisplay(jobs)
+            
         }
 
+        setJobs(abc)
         setDisplay(abc)
+        
     }
 
     return (

@@ -16,6 +16,7 @@ export const Nav = () => {
     const location = useLocation();
     const { user} = useContext(AuthContext);
     const { down1, DownWindow } = useContext(DownWindowContext)
+    const [ opener1, setOpener1 ] = useState(false)
     
     //console.log(location)
     
@@ -37,12 +38,7 @@ export const Nav = () => {
 
 
     function Opener1 () {
-        let opener1 = document.getElementById('opener-1');
-        //console.log( opener1.style.display )
-        if(  opener1.style.display === 'none' || !opener1.style.display )
-            opener1.style.display = 'block';
-        else
-            opener1.style.display = 'none'
+        setOpener1( prev => !prev )
     }
 
     
@@ -62,7 +58,7 @@ export const Nav = () => {
 
             { user ? 
                 <div className='cursor-pointer h-[3rem] w-[3rem] rounded-full relative bg-cover bg-center z-3' title={user.displayName} onClick={Opener1} style={{  backgroundImage: `url(${user.photoURL})` }}  >
-                    <div id='opener-1' className='absolute top-[100%] right-0 ' >
+                    <div id='opener-1' className={`absolute flex-col bg-[var(--color2)] p-2 rounded-xl w-[10rem] right-[0%] top-[100%] ${opener1 ? "flex" : "hidden" }`} >
                         <div onClick={ ()=> navigate('/profile')} className='button-1' >Profile</div>
                         <Theme />
                         <SignOut />

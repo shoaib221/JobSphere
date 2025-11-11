@@ -1,20 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useAxios } from '../axios/axios';
 import { Job } from './AllJobs.jsx';
 import { min } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { DownWindowContext } from '../Nav/context.jsx';
+import { AuthContext } from '../auth/context.jsx';
 
 
 
 
 
 export const Home = () => {
-    const { axiosInstance } = useAxios()
+    const { axiosInstance } = useContext(AuthContext)
     const [jobs, setJobs] = useState([])
     const [category, setCategory] = useState([])
     const navigate = useNavigate()
     const { DownWindow, DownWindowTag } = useContext(DownWindowContext)
+    const { user } = useContext(AuthContext)
 
 
     useEffect(() => {
@@ -31,7 +32,7 @@ export const Home = () => {
 
         }).catch(err => console.log(err))
 
-    }, [])
+    }, [axiosInstance])
 
     return (
         <div className='block flex-grow relative' >
@@ -71,15 +72,10 @@ export const Home = () => {
             <div>
                 <div className='text-2xl font-bold text-center' >About</div>
             </div>
-
             
-            <div className='absolute hidden z-2 h-[100%] w[100%] bg-[var(--color1)]  flex-col items-center top-0 left-0 p-4 gap-4' id="down-1" >
-                <div onClick={() => DownWindow("/")} className='style1'  >Home</div>
-                <div onClick={() => DownWindow("/add-job")} className='style1' >Add Job</div>
-                <div onClick={() => DownWindow("/all-jobs")} className='style1' >All Jobs</div>
-                <div onClick={() => DownWindow("/my-jobs")} className='style1' >My Jobs</div>
-                <div onClick={() => DownWindow("/my-task")} className='style1' >My Tasks</div>
-            </div>
+            <DownWindowTag />
+            
+            
 
         </div>
     );

@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PrivateRoute } from '../auth/auth.jsx';
-import { useAxios } from '../axios/axios.jsx'
+
 import { AuthContext } from '../auth/context.jsx';
 
 
 export const Test = () => {
 
-    const { axiosInstance } = useAxios()
+    
     const [ data, setData ] = useState(null)
-    const { user } = useContext(AuthContext)
+    const { user, axiosInstance } = useContext(AuthContext)
 
     useEffect( () => {
         if(!user) return;

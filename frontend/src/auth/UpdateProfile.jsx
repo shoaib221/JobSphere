@@ -18,7 +18,7 @@ export const UpdateProfile = () => {
     const [photo, setPhoto] = useState("");
     const [number, setNumber] = useState("");
     const [email, setEmail] = useState("");
-    const { DownWindow } = useContext(DownWindowContext);
+    const { DownWindow, DownWindowTag } = useContext(DownWindowContext);
 
     useEffect(() => {
         if (!user) return;
@@ -48,8 +48,8 @@ export const UpdateProfile = () => {
 
     return (
         <PrivateRoute>
-            <div style={{ flexGrow: '1', position: 'relative' }} className="cen-ver" >
-                <div className="box-1 h-full w-full max-w-[600px] max-h-[800px]" >
+            <div  className="cen-ver flex-grow relative" >
+                <div className="box-1 max-w-[600px] w-full" >
                     <div id='profile-head'  >
                         <div id='profile-photo' style={{ backgroundImage: `url(${user?.photoURL})` }} ></div>
                         <div className="cen-ver" >
@@ -69,13 +69,7 @@ export const UpdateProfile = () => {
                     <button onClick={Update} className="button-1"  >Update</button>
                 </div>
 
-                <div className='absolute hidden z-1 h-[100%] w[100%] bg-[var(--color1)]  flex-col items-center top-0 left-0 p-4 gap-4' id="down-1" >
-                    <div onClick={() => DownWindow("/")} className='style1'  >Home</div>
-                    <div onClick={() => DownWindow("/add-job")} className='style1' >Add Job</div>
-                    <div onClick={() => DownWindow("/all-jobs")} className='style1' >All Jobs</div>
-                    <div onClick={() => DownWindow("/my-jobs")} className='style1' >My Jobs</div>
-                    <div onClick={() => DownWindow("/my-task")} className='style1' >My Tasks</div>
-                </div>
+                <DownWindowTag />
 
             </div>
         </PrivateRoute>
