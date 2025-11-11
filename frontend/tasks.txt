@@ -1,0 +1,13 @@
+model -> page -> data fetching -> styling
+
+context -> hook -> page -> main
+
+#todo
+    nav link under liner
+    responsiveness
+    modal
+    email verification
+
+
+
+

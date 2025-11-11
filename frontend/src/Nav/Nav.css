@@ -1,0 +1,50 @@
+#opener-1 {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    background-color: var(--color2);
+    color: var(--color1);
+    width: 10rem;
+    border-radius: .5rem;
+    padding: .5rem;
+}
+
+
+
+@keyframes grow {
+    from {
+        height: 0%;
+    }
+
+    to {
+        height: 100%;
+    }
+}
+
+@keyframes grow1 {
+    from {
+        height: 100%;
+    }
+    to {
+        height: 0%;
+    }
+}
+
+.bar {
+    width: 100%;
+    animation: grow 0.1s ease-in-out forwards;
+}
+
+.bar-rev {
+    animation: grow1 0.1s ease-in-out forwards;
+}
+
+.style1 {
+    background-color: var(--color2);
+    color: var(--color1);
+    width: 100%;
+    padding: .5rem;
+    text-align: center;
+    border-radius: .5rem;
+}

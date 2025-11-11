@@ -1,0 +1,17 @@
+.cen-hor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cen-ver {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.active-navi {
+    background-color: var(--color2);
+    color: var(--color1);
+}

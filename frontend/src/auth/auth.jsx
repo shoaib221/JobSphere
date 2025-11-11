@@ -1,0 +1,162 @@
+import React, { useEffect, useState } from 'react';
+import './auth-style.css';
+import { EmailLogin, EmailRegister } from './Email';
+import { GoogleLogin } from './Google';
+import { GithubLogin } from './Github';
+import { useContext } from 'react';
+import { AuthContext } from './context';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Loading } from '../miscel/Loading';
+import { auth } from './firebase.config';
+import { sendPasswordResetEmail, signOut } from 'firebase/auth';
+import { Breaker } from '../miscel/Breaker';
+import { toast } from 'react-toastify';
+
+const isValidemail = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+
+
+export const SignOut = () => {
+    const { setUser, user } = useContext(AuthContext);
+
+
+    function handle() {
+        signOut(auth).then(() => {
+            setUser(null);
+        }).catch((error) => {
+            toast.error(error.message)
+        });
+    }
+
+    if (user) return (
+        <div onClick={handle} className='button-1' >
+            Sign Out
+        </div>
+    )
+    else return;
+}
+
+
+const LogIn = ({ toggle }) => {
+
+
+
+    return (
+        <div className='flex flex-col justify-center items-center box-1 p-4 w-full max-w-[500px]' >
+            <EmailLogin />
+
+            <Breaker message={'or'} />
+
+            <GoogleLogin />
+            {/* <GithubLogin /> */}
+
+            <br />
+
+            <div>
+                Do not have an account? <span onClick={() => toggle('register')} className='link-1' >Register</span>
+            </div>
+
+            {/* <div className='underline cursor-pointer' onClick={() => toggle("forgot")}  >
+                Forgot Password?
+            </div> */}
+        </div>
+    )
+}
+
+
+
+const Register = ({ toggle }) => {
+
+    return (
+        <div className='cen-ver box-1' >
+            <EmailRegister />
+
+            <Breaker message={'or'} />
+
+            <GoogleLogin />
+            {/* <GithubLogin /> */}
+
+            <br />
+
+            <div>
+                Already Have an account? <span onClick={() => toggle('login')} className='link-1' >Log In</span>
+            </div>
+
+            {/* <div className='underline cursor-pointer' onClick={() => toggle("forgot")}  >
+                Forgot Password?
+            </div> */}
+        </div>
+    )
+}
+
+
+const ForgotPassword = ({ toggle }) => {
+    const [email, setEmail] = useState(null)
+
+    function ResetPassword() {
+        if (!isValidemail.test(email)) {
+            toast.error('Invalid Email')
+            return;
+        }
+        
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                toast.success("Check your inbox for reset link")
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                toast.error(errorMessage);
+            });
+    }
+
+    return (
+        <div className='box-1 flex flex-col justify-center items-center gap-4' >
+            <div className='text-3xl text-center font-bold' > Reset Password </div>
+            <input type='email' placeholder='Your Email' value={email}
+                onChange={(e) => setEmail(e.target.value)} className='w-full' />
+
+            <button className='button-1' onClick={ResetPassword} >Submit</button>
+
+            <br />
+
+            <div onClick={() => toggle('login')} className='cursor-pointer underline' >Login Instead?</div>
+            <div>Already Have An Account? <span className='cursor-pointer underline' onClick={() => toggle('register')} >Register</span> </div>
+        </div>
+    )
+}
+
+export const Auth = () => {
+    const [login, setLogin] = useState("login");
+    const { user, loading } = useContext(AuthContext);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+
+
+    useEffect(() => {
+        if (user) navigate(location.state || '/');
+    }, [user])
+
+    if (loading) return <Loading />
+
+    return (
+        <div className='flex justify-center items-center flex-grow' >
+            {login === "login" && <LogIn toggle={setLogin} />}
+            {login === "register" && <Register toggle={setLogin} />}
+            {/* {login === "forgot" && <ForgotPassword toggle={setLogin} />} */}
+        </div>
+    )
+};
+
+
+export const PrivateRoute = ({ children }) => {
+
+    const { user, loading } = useContext(AuthContext);
+    const location = useLocation();
+
+    if (loading) return <Loading />
+    else if (!user) return <Navigate to='/auth' state={location?.pathname} />
+    else return children;
+}
+
+
+
