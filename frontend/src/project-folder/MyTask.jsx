@@ -18,11 +18,11 @@ export const MyTask = () => {
     useEffect(() => {
         if(!user) return;
         axiosInstance.get("/product/my-task").then(res => {
-            console.dir(res.data)
+            //console.dir(res.data)
             setJobs(res.data?.task)
             setDisplay(res.data?.task)
         }).catch(error => {
-            console.dir(error)
+            //console.dir(error)
         })
 
     }, [user, axiosInstance])
@@ -92,7 +92,7 @@ export const MyTask = () => {
 
                 <br />
 
-                <div className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto' >
+                <div className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto p-2' >
                     {display && display.map(elem => <Job key={elem._id} job={elem} />)}
                 </div>
 

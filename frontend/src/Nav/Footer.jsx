@@ -1,7 +1,7 @@
 import React from 'react';
 import { RiTwitterXFill } from "react-icons/ri";
 import { FaLinkedin, FaFacebook } from "react-icons/fa";
-
+import { TbBrandStocktwits } from "react-icons/tb";
 
 
 export const Footer = () => {
@@ -9,14 +9,14 @@ export const Footer = () => {
     return (
         <div id='footer' className='px-8' >
             <div style={{ display: 'flex', justifyContent: 'space-between' }} >
-                <div className='cen-hor' >
-                    <img src='/logo1.jpg' style={{ height: '2rem' }} />
-                    <span style={{ color: 'var(--color2)', fontWeight: '600' }} >SkillUp</span>
+                <div className='h-[3rem]   flex gap-2' >
+                    <TbBrandStocktwits className='h-full text-2xl' />
+                    <div className='cen-ver font-bold' >JobSphere</div>
                 </div>
 
                 <div>
                     <div>Social Links</div>
-                    <div  style={{ display: 'flex', gap: '1rem', fontSize: '1.5rem', marginTop: '1rem' }} >
+                    <div style={{ display: 'flex', gap: '1rem', fontSize: '1.5rem', marginTop: '1rem' }} >
                         <RiTwitterXFill />
                         <FaLinkedin />
                         <FaFacebook />

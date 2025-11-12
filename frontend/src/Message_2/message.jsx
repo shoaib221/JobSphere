@@ -12,9 +12,10 @@ export const Message = () => {
 
 
     function sendMessage() {
-        axiosInstance.post('test', { message: 'hello' }).then(res => 
-            console.log(res.data)).catch(error => {
-            console.dir(error)
+        axiosInstance.post('test', { message: 'hello' }).then(res => {
+            //console.log(res.data)
+        }).catch(error => {
+            //console.dir(error)
         })
     }
 

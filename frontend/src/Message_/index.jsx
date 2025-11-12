@@ -19,7 +19,7 @@ export const Form = () => {
             body: JSON.stringify( { message: msg } )
             
         }).then(data => data.json()).then(res => {
-            console.log(res);
+            //console.log(res);
             setMessages( [ ...messages, res ] );
         })
     }

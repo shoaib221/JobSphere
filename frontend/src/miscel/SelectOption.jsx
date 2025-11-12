@@ -12,7 +12,9 @@ const DataSelect = () => {
                 // Assuming each item has 'id' and 'name'
                 setOptions(data);
             })
-            .catch((err) => console.error("Error fetching data:", err));
+            .catch((err) => {
+                //console.error("Error fetching data:", err)
+            });
     }, []);
 
     const handleChange = (e) => {

@@ -11,7 +11,7 @@ export const Job = ({ job }) => {
 
     return (
         <div className='h-[15rem] p-2 box-1' >
-            <div className='w-[90%] h-[7rem]' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
+            <div className='w-[90%] h-[7rem] bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
             <div className='font-bold text-xl' >{job.title} </div>
             <div> {job.summary} </div>
             <button className='button-1' onClick={() => navigate(`/job-detail/${job._id}`)} >
@@ -38,9 +38,11 @@ export const AllJobs = () => {
             setJobs(res.data.jobs)
             setDisplay(res.data.jobs)
             //console.log( res.data.jobs )
-        }).catch(err => console.log(err))
+        }).catch(err => {
+            //console.log(err)
+        })
 
-    }, [])
+    }, [axiosInstance])
 
 
     function SearchByCategory(event) {
@@ -66,7 +68,7 @@ export const AllJobs = () => {
         setSort(param)
         let abc = [...jobs];
 
-        console.log("sort display", param)
+        //console.log("sort display", param)
 
         if (param === 'latest') {
             abc.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // newest first
@@ -107,8 +109,7 @@ export const AllJobs = () => {
 
             <br/ >
 
-            <div className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto' >
-
+            <div className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto p-2' >
                 {display && display.map(job => <Job key={job._id} job={job} />)}
             </div>
 

@@ -40,7 +40,7 @@ export const EmailLogin = () => {
     }
 
     function Login() {
-        console.log("log in")
+        //console.log("log in")
 
         if (!isValidemail.test(email)) {
             toast.error('Invalid Email')

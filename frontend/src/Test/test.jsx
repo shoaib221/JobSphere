@@ -16,10 +16,14 @@ export const Test = () => {
             headers: {
                 authorization: `Bearer ${user.accessToken}`
             }
-        } ).then( res => console.log(res))
-        .catch( err => console.dir(err) )
+        } ).then( res => {
+            //console.log(res)
+        })
+        .catch( err => {
+            //console.dir(err) 
+        })
 
-    }, [user] )
+    }, [user, axiosInstance] )
 
     return (
         <PrivateRoute>

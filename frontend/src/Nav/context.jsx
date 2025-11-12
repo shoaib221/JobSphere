@@ -20,7 +20,7 @@ export const DownWindowProvider = ({ children }) => {
     }
 
     useEffect( () => {
-        console.log("Location change")
+        //console.log("Location change")
         let path = location.pathname.toLowerCase()
 
         if( path.includes("add-job") ) selectNavi("add-job");

@@ -13,6 +13,10 @@ export const Entry = () => {
     const { navi } = useContext(DownWindowContext)
     const { user } = useContext(AuthContext)
 
+    useEffect(()=> {
+        //console.log(  import.meta.env.VITE_TEST );
+    }, [])
+
     return (
         <>
             <Nav />

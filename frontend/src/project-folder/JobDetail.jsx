@@ -25,10 +25,12 @@ export const JobDetail = () => {
         if (!user || !id) return;
         axiosInstance.get(`/product/job/${id}`)
             .then(res => {
-                console.log(res.data)
+                //console.log(res.data)
                 setJob(res.data)
             })
-            .catch(err => console.dir(err))
+            .catch(err => {
+                //console.dir(err)
+            })
     }, [user, axiosInstance, id])
 
 
@@ -41,7 +43,9 @@ export const JobDetail = () => {
             toast.success("Task accepted")
             setJob(res.data.job)
         })
-            .catch(err => console.dir(err))
+            .catch(err => {
+                //console.dir(err)
+            })
     }
 
 
@@ -76,14 +80,15 @@ export const JobDetail = () => {
             <div className='flex-grow flex justify-center items-center relative' >
                 <div className='w-full max-w-[600px] flex flex-col items-center box-1 p-4' >
                     {job && <>
-                        <div className='flex flex-col md:flex-row justify-center items-center w-full' >
-                            <div className='h-[10rem] w-[10rem] rounded-full' style={{ backgroundImage: `url(${job.coverImage})` }} >
+                        <div className='flex flex-col md:flex-row justify-center items-center w-full gap-2' >
+                            <div className='bg-cover bg-center min-h-[10rem] min-w-[10rem] rounded-full' style={{ backgroundImage: `url(${job.coverImage})` }} >
 
                             </div>
                             <div className='w-full' >
                                 <div className='text-2xl font-bold flex justify-between' >
                                     <div>{job.title}</div>
-                                    <RiDeleteBin6Line title='Delete' onClick={DeleteJob} />
+                                    { job.ownerEmail === user.email && <RiDeleteBin6Line title='Delete' onClick={DeleteJob} /> }
+                                    
                                 </div>
 
                                 <div>

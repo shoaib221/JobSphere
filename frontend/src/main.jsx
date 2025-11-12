@@ -26,7 +26,7 @@ import { Home } from './project-folder/Home.jsx';
 import { Entry } from './project-folder/Entry.jsx';
 
 import { DownWindowProvider } from './Nav/context.jsx';
-
+import { Theme } from './Theme/Theme.jsx';
 
 const App =  () => {
 

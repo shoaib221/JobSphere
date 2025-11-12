@@ -8,6 +8,8 @@ import './Nav.css';
 import { Theme } from '../Theme/Theme.jsx';
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { DownWindowContext } from './context.jsx';
+import { TbBrandStocktwits } from "react-icons/tb";
+import { Breaker } from '../miscel/Breaker.jsx';
 
 
 
@@ -46,8 +48,8 @@ export const Nav = () => {
     return (
         <nav className='flex min-h-[3rem] justify-between m-4 items-center' >
             <div className='h-[3rem]   flex gap-2' >
-                <img src='/logo1.jpg' className='h-full' />
-                <div className='cen-ver' >App Name</div>
+                <TbBrandStocktwits  className='h-full text-2xl' />
+                <div className='cen-ver font-bold' >JobSphere</div>
             </div>
 
             {/* <div onClick={ () => navigate('/') } style={{ cursor: 'pointer' }} className={ `${location.pathname === '/'? 'hilit-1': ''}` } >Home</div> */}
@@ -57,10 +59,12 @@ export const Nav = () => {
             </div>
 
             { user ? 
-                <div className='cursor-pointer h-[3rem] w-[3rem] rounded-full relative bg-cover bg-center z-3' title={user.displayName} onClick={Opener1} style={{  backgroundImage: `url(${user.photoURL})` }}  >
-                    <div id='opener-1' className={`absolute flex-col bg-[var(--color2)] p-2 rounded-xl w-[10rem] right-[0%] top-[100%] ${opener1 ? "flex" : "hidden" }`} >
-                        <div onClick={ ()=> navigate('/profile')} className='button-1' >Profile</div>
+                <div className='cursor-pointer h-[3rem] w-[3rem] rounded-full relative bg-cover bg-center z-3' title={user.displayName} onClick={Opener1} style={{  backgroundImage: `url(${user.photoURL})`, border: '.1rem solid var(--color2)' }}  >
+                    <div id='opener-1' className={`box-shadow-1 absolute flex-col p-2 rounded-xl w-[10rem] right-[0%] top-[105%] ${opener1 ? "flex" : "hidden" }`} style={{ border: '1px solid var(--color2)'  }} >
+                        <div onClick={ ()=> navigate('/profile')} className='p-1 text-center w-full'  >Profile</div>
+                        <Breaker />
                         <Theme />
+                        <Breaker />
                         <SignOut />
                     </div>
                 </div>

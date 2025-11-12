@@ -17,18 +17,20 @@ const isValidemail = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
 
 export const SignOut = () => {
     const { setUser, user } = useContext(AuthContext);
+    const navigate = useNavigate()
 
 
     function handle() {
         signOut(auth).then(() => {
             setUser(null);
+            navigate("/auth");
         }).catch((error) => {
             toast.error(error.message)
         });
     }
 
     if (user) return (
-        <div onClick={handle} className='button-1' >
+        <div onClick={handle} className='p-1 text-center' >
             Sign Out
         </div>
     )

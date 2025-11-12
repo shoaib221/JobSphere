@@ -20,9 +20,9 @@ export const MyJobs = () => {
         axiosInstance.get("/product/my-jobs").then(res => {
             setJobs(res.data.jobs);
             setDisplay(res.data.jobs);
-            console.log(res.data.jobs);
+            //console.log(res.data.jobs);
         }).catch(err => {
-            console.dir(err)
+            //console.dir(err)
         })
 
     }, [user, axiosInstance])
@@ -51,7 +51,7 @@ export const MyJobs = () => {
         setSort(param)
         let abc = [...jobs];
 
-        console.log("sort display", param)
+        //console.log("sort display", param)
 
         if (param === 'latest') {
             abc.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // newest first

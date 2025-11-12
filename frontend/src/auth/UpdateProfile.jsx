@@ -11,6 +11,7 @@ import { PrivateRoute } from "./auth";
 import { DownWindowContext } from '../Nav/context'
 
 
+
 export const UpdateProfile = () => {
     const { user, loading, setUser } = useContext(AuthContext);
     const location = useLocation();
@@ -51,7 +52,7 @@ export const UpdateProfile = () => {
             <div  className="cen-ver flex-grow relative" >
                 <div className="box-1 max-w-[600px] w-full" >
                     <div id='profile-head'  >
-                        <div id='profile-photo' style={{ backgroundImage: `url(${user?.photoURL})` }} ></div>
+                        <div id='profile-photo' className="box-1" style={{ backgroundImage: `url(${user?.photoURL})` }} ></div>
                         <div className="cen-ver" >
                             <span className="text-2xl font-bold" >{user?.displayName}</span>
                             <span> {user?.email} </span>
