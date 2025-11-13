@@ -4,7 +4,7 @@ import { min } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { DownWindowContext } from '../Nav/context.jsx';
 import { AuthContext } from '../auth/context.jsx';
-
+import { motion } from 'framer-motion';
 
 
 
@@ -41,10 +41,45 @@ export const Home = () => {
     return (
         <div className='block flex-grow relative' >
             <div className='grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 px-4' >
-                <div className='h-[15rem] bg-cover bg-bottom' style={{ backgroundImage: "url('/banner.jpg')" }} ></div>
+                <div className='h-[15rem] bg-cover bg-bottom rounded-xl' style={{ backgroundImage: "url('/banner.jpg')" }} ></div>
                 <div className='flex flex-col justify-end'>
-                    <div className='text-3xl font-bold' >Grab Your Opportunities</div>
-                    <div>Your gateway to endless career opportunities! Discover jobs, connect with employers, and take the next step toward your future. Start exploring and find your perfect match today!</div>
+                    <div className="relative overflow-hidden">
+                        
+                        <motion.div
+                            className="text-3xl font-bold"
+                            initial={{ x: 500 }}
+                            animate={{ x: 0 }}
+                            transition={{ duration: 1, ease: "easeInOut" }}
+                        >
+                            Grab Your <span style={{ color: 'red' }}>Opportunities</span>
+                        </motion.div>
+                    </div>
+
+                    <div className="relative overflow-hidden">
+                        
+                        <motion.div
+                            className="text-justify italic"
+                            initial={{ y: -500 }}
+                            animate={{ y: 0 }}
+                            transition={{ duration: 1, ease: "easeInOut" }}
+                        >
+                            Your gateway to endless career opportunities! Discover jobs, connect with employers, and take the next step toward your future. Start exploring and find your perfect match today!
+                        </motion.div>
+                    </div>
+
+
+                    <div className="relative overflow-hidden">
+                        
+                        <motion.button
+                            className='cen-ver max-w-[10rem] p-2 bg-red-600 text-center font-bold text-white rounded-xl' onClick={() => navigate("/add-job")}
+                            initial={{ x: -500 }}
+                            animate={{ x: 0 }}
+                            transition={{ duration: 1, ease: "easeInOut" }}
+                        >
+                            Add a job
+                        </motion.button>
+                    </div>
+
                 </div>
             </div>
 
@@ -85,11 +120,11 @@ export const Home = () => {
                 <br />
                 <div className='text-justify' >
                     Welcome to JobSphere, your all-in-one platform for finding and posting job opportunities with ease. We connect employers and job seekers
-                    in a fast, reliable, and user-friendly environment designed to simplify the hiring process. Whether you’re a business 
+                    in a fast, reliable, and user-friendly environment designed to simplify the hiring process. Whether you’re a business
                     searching for the right talent or a professional looking for your next career move, JobSphere helps you reach your goals effortlessly.
-                    Our mission is to bridge the gap between skills and opportunities by providing transparent listings, smart search filters, and real-time 
+                    Our mission is to bridge the gap between skills and opportunities by providing transparent listings, smart search filters, and real-time
                     updates. We believe in empowering people through meaningful work and supporting businesses in building strong teams.
-                    From local startups to global enterprises, JobSphere is the trusted platform where opportunities meet ambition. 
+                    From local startups to global enterprises, JobSphere is the trusted platform where opportunities meet ambition.
                     Start exploring today — your next big opportunity is just one click away.
                 </div>
             </div>

@@ -54,13 +54,13 @@ export const Nav = () => {
 
             {/* <div onClick={ () => navigate('/') } style={{ cursor: 'pointer' }} className={ `${location.pathname === '/'? 'hilit-1': ''}` } >Home</div> */}
 
-            <div className='flex justify-center items-center md:hidden' onClick={ DownWindow } >
+            <div className='flex justify-center text-2xl px-6 items-center md:hidden' onClick={ DownWindow } >
                 { down1 ? <FaChevronDown /> :  <FaChevronUp /> }
             </div>
 
             { user ? 
-                <div className='cursor-pointer h-[3rem] w-[3rem] rounded-full relative bg-cover bg-center z-3' title={user.displayName} onClick={Opener1} style={{  backgroundImage: `url(${user.photoURL})`, border: '.1rem solid var(--color2)' }}  >
-                    <div id='opener-1' className={`box-shadow-1 absolute flex-col p-2 rounded-xl w-[10rem] right-[0%] top-[105%] ${opener1 ? "flex" : "hidden" }`} style={{ border: '1px solid var(--color2)'  }} >
+                <div className='cursor-pointer h-[3rem] w-[3rem] rounded-full relative bg-cover bg-center z-3' title={user.email} onClick={Opener1} style={{  backgroundImage: `url(${user.photoURL})`, border: '.1rem solid var(--color2)' }}  >
+                    <div id='opener-1' className={`box-shadow-1 absolute flex-col p-2 rounded-xl w-[10rem] right-[0%] top-[105%] z-4 bg-[var(--color1)] ${opener1 ? "flex" : "hidden" }`} style={{ border: '1px solid var(--color2)'  }} >
                         <div onClick={ ()=> navigate('/profile')} className='p-1 text-center w-full'  >Profile</div>
                         <Breaker />
                         <Theme />

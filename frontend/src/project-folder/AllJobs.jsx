@@ -4,16 +4,22 @@ import '../Box/box.css';
 import { useNavigate } from 'react-router-dom';
 import { DownWindowContext } from '../Nav/context';
 import { AuthContext } from '../auth/context';
+import { IoPerson } from "react-icons/io5";
+import { BiCategory } from "react-icons/bi";
 
 
 export const Job = ({ job }) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     return (
         <div className='h-[15rem] p-2 box-1' >
-            <div className='w-[90%] h-[7rem] bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
-            <div className='font-bold text-xl' >{job.title} </div>
-            <div> {job.summary} </div>
+            <div className='w-full h-[7rem] bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
+            <div className='font-bold' >{job.title} </div>
+            <div className='text-[.8rem] italic' > {job.summary.substring(0, 20)} ...</div>
+            <div className='flex text-[.7rem] justify-between' >
+                <div className='flex gap-1 items-center' > <IoPerson /> {job.postedBy} </div>
+                <div className='flex gap-1 items-center' > {job.category} <BiCategory /> </div>
+            </div>
             <button className='button-1' onClick={() => navigate(`/job-detail/${job._id}`)} >
                 View Detail
             </button>

@@ -23,11 +23,11 @@ export const Entry = () => {
             <div className='flex-grow flex gap-4' >
                 <div className='flex-col min-w-[10rem] gap-4 px-4 hidden md:flex' >
                     <div className={"p-2 rounded-[.5rem] " + (navi === "home" ? "active-navi" : "")} onClick={() => navigate('/')} >Home</div>
-
                     <div className={"p-2 rounded-[.5rem] " + (navi === 'all-jobs' ? 'active-navi' : '')} onClick={() => navigate('/all-jobs')} >All Jobs</div>
+                    
 
                     {user && <>
-                        <div className={"p-2 rounded-[.5rem] " + (navi === 'add-job' ? 'active-navi' : '')} onClick={() => navigate('/add-job')} >Add Job</div>
+                        <div className={"p-2 rounded-[.5rem] " + (navi === 'add-job' ? 'active-navi' : '')} onClick={() => navigate('/add-job')} >Add Job</div>                        
                         <div className={"p-2 rounded-[.5rem] " + (navi === 'my-jobs' ? 'active-navi' : '')} onClick={() => navigate('/my-jobs')} >My Jobs</div>
                         <div className={"p-2 rounded-[.5rem] " + (navi === 'my-task' ? 'active-navi' : '')} onClick={() => navigate('/my-task')} >My Tasks</div>
                     </>}

@@ -11,6 +11,7 @@ import { auth } from './firebase.config';
 import { sendPasswordResetEmail, signOut } from 'firebase/auth';
 import { Breaker } from '../miscel/Breaker';
 import { toast } from 'react-toastify';
+import { DownWindowContext } from '../Nav/context';
 
 const isValidemail = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
 
@@ -129,6 +130,7 @@ const ForgotPassword = ({ toggle }) => {
 export const Auth = () => {
     const [login, setLogin] = useState("login");
     const { user, loading } = useContext(AuthContext);
+    const { DownWindowTag } = useContext( DownWindowContext )
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -141,10 +143,11 @@ export const Auth = () => {
     if (loading) return <Loading />
 
     return (
-        <div className='flex justify-center items-center flex-grow' >
+        <div className='flex justify-center items-center flex-grow relative' >
             {login === "login" && <LogIn toggle={setLogin} />}
             {login === "register" && <Register toggle={setLogin} />}
             {/* {login === "forgot" && <ForgotPassword toggle={setLogin} />} */}
+            <DownWindowTag />
         </div>
     )
 };

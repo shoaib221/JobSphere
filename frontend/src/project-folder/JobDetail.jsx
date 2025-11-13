@@ -18,6 +18,7 @@ export const JobDetail = () => {
     const { DownWindow, DownWindowTag } = useContext(DownWindowContext);
     const navigate = useNavigate();
     const [updating, setUpdating] = useState(false)
+    const [category, setCategory] = useState([])
 
 
 
@@ -32,6 +33,19 @@ export const JobDetail = () => {
                 //console.dir(err)
             })
     }, [user, axiosInstance, id])
+
+
+    useEffect(() => {
+        axiosInstance.get('/product/category')
+            .then((data) => {
+                // Assuming each item has 'id' and 'name'
+                setCategory(data.data?.result);
+                //console.log(data.data?.result)
+            })
+            .catch((err) => {
+                //console.error("Error fetching data:", err)
+            });
+    }, [])
 
 
     function AcceptJob() {
@@ -87,8 +101,8 @@ export const JobDetail = () => {
                             <div className='w-full' >
                                 <div className='text-2xl font-bold flex justify-between' >
                                     <div>{job.title}</div>
-                                    { job.ownerEmail === user.email && <RiDeleteBin6Line title='Delete' onClick={DeleteJob} /> }
-                                    
+                                    {job.ownerEmail === user.email && <RiDeleteBin6Line title='Delete' onClick={DeleteJob} />}
+
                                 </div>
 
                                 <div>
@@ -110,8 +124,10 @@ export const JobDetail = () => {
                                     <input maxLength="20" value={job.title} onChange={(e) => WatchChange("title", e.target.value)} placeholder='Maximum twenty characters' />
 
                                     <label className='font-bold flex flex-row-reverse items-center' >Category</label>
-                                    <select value={job.category} >
-                                        <option></option>
+                                    <select value={job.category} className='bg-[var(--color1)] text-[var(--color2)]' >
+                                        { category && category.map( cat => (
+                                            <option key={cat._id} value={cat.name} > { cat.name } </option>
+                                        ) ) }
                                     </select>
 
                                     <label className='font-bold flex flex-row-reverse items-center' >Cover Image</label>
@@ -146,7 +162,7 @@ export const JobDetail = () => {
                                 <br />
 
                                 {job.acceptedBy !== 'none' && <>
-                                    <div className='font-bold' > Done By   </div>
+                                    <div className='font-bold' > Accepted By   </div>
                                     <div className='italic' > {job.acceptedBy} </div>
                                     <br />
                                 </>}

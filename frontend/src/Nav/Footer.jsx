@@ -17,9 +17,9 @@ export const Footer = () => {
                 <div>
                     <div>Social Links</div>
                     <div style={{ display: 'flex', gap: '1rem', fontSize: '1.5rem', marginTop: '1rem' }} >
-                        <RiTwitterXFill />
-                        <FaLinkedin />
-                        <FaFacebook />
+                        <RiTwitterXFill title='X' onClick={ () => window.open("https://x.com", "_blank") } />
+                        <FaLinkedin title='Linkedin' onClick={ () => window.open( "https://www.linkedin.com/", "_blank" ) } />
+                        <FaFacebook title='Facebook' onClick={ () => window.open( "https://www.facebook.com", "_blank" ) } />
                     </div>
                 </div>
             </div>
