@@ -47,7 +47,7 @@ A full-stack job management web app for connecting freelancers with clients.
 ## 📦 Packages Used
 
 ### Frontend
-- `@headlessui/react` *(optional)*  
+- `framer motion
 - `lucide-react` *(icons)*  
 
 ### Backend
