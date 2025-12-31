@@ -1,24 +1,15 @@
 # 🚀 JobSphere
 
-A full-stack job management web app for connecting freelancers with clients.
-
----
-
-## 🌐 Live Link
+A job-hunting website where people can search and apply for their preferred jobs.
 
 👉 **[Live Demo](https://jobsphere-shoaib326.netlify.app/)**
 
 ---
 
 ## ✨ Features
-
-- 🔐 User authentication (Login, Signup, JWT / Firebase Auth)
-- 🧠 Role-based access (Admin / User / Moderator)
-- 📦 CRUD operations (Create, Read, Update, Delete)
-- ⚡ Real-time data updates
-- 🎨 Responsive UI with modern design
-- 🔎 Search, filter, and sort functionality
-- ☁️ Deployed with Firebase / Vercel / Render / Netlify
+- ⚡ Admins can create and update job announcements
+- ⚡ People can search for jobs according to their preferred genre, location, salary range and prerequisites
+- ⚡ Applicants can apply for jobs 
 
 ---
 
@@ -26,9 +17,7 @@ A full-stack job management web app for connecting freelancers with clients.
 
 **Frontend:**
 - React.js  
-- Tailwind CSS  
-- Axios  
-- React Router DOM  
+- Tailwind CSS  & DaisyUI
 
 **Backend:**
 - Node.js  
@@ -46,26 +35,18 @@ A full-stack job management web app for connecting freelancers with clients.
 
 ## 📦 Packages Used
 
-### Frontend
 - `framer motion
 - `lucide-react` *(icons)*  
-
-### Backend
-- `mongoose`  
+- `mongoose`
+-  swiper
 
 ---
 
 ## 🧑‍💻 Setup Instructions
 
 ```bash
-# Clone the repository
+
 git clone https://github.com/shoaib221/B12-A10-category-017.git
-
-# Navigate into the project
-cd B12-A10-category-017
-
-# Install dependencies
+cd JobSphere
 npm install
-
-# Run the development server
 npm run dev
