@@ -1,3 +1,10 @@
+<p align="center">
+  <img src="images/banner1.jpg" width="700"  alt="Demo Image" />
+  <img src="images/banner2.jpg" width="700"  alt="Demo Image" />
+</p>
+
+---
+
 # 🚀 JobSphere
 
 A job-hunting website where people can search and apply for their preferred jobs.
