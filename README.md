@@ -46,7 +46,8 @@ A job-hunting website where people can search and apply for their preferred jobs
 
 ```bash
 
-git clone https://github.com/shoaib221/B12-A10-category-017.git
-cd JobSphere
+git clone https://github.com/shoaib221/JobSphere.git
+cd JobSphere/backend
+cd JobSphere/frontend
 npm install
 npm run dev
