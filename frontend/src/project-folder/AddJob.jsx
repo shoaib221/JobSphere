@@ -2,50 +2,42 @@ import React, { useContext } from 'react';
 
 import { useState, useEffect } from 'react';
 
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { PrivateRoute } from '../auth/auth';
 import { DownWindowContext } from '../Nav/context';
-import { AuthContext } from '../auth/context';
+import { useAuthContext } from '../auth/context';
+import { useForm } from "react-hook-form";
 
-export const AddJob = () => {
-    const { axiosInstance }  = useContext(AuthContext)
-    const [title, setTitle] = useState("");
-    const [photo, setPhoto] = useState("");
-    const [summary, setSummary] = useState("");
+
+
+export function AddJob() {
+    const { axiosInstance } = useAuthContext()
     const [category, setCategory] = useState([]);
-    const [selected, setSelected] = useState("");
-    const { DownWindow, DownWindowTag } = useContext(DownWindowContext)
 
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
+        defaultValues: {
+            title: "",
+            photo: "",
+            summary: "",
+            category: ""
+        },
+    });
 
-    function handleSubmit(event) {
-        event.preventDefault();
-    }
-
-    function handleCategory(event) {
-        event.preventDefault();
-        setSelected(event.target.value)
-    }
-
-    function AddJob(event) {
-        event.preventDefault();
-        if (!title || !photo || !summary || !selected) {
-            toast.error("Fill all the fields")
-            return
+    const onSubmit = async (data) => {
+        try {
+            let res = await axiosInstance.post("/product/add-job", data);
+            console.log( res.data )
+            reset();
+            toast.success("Succesfully Added")
+        } catch(err ) {
+            console.log(err.message)
         }
-
-
-        axiosInstance.post("/product/add-job", {
-            title, photo, summary, selected
-        }).then(res => {
-            setTitle("");
-            setPhoto("");
-            setSummary("");
-            setCategory("")
-            setSelected("");
-            toast.success("Job created");
-        })
-            .catch(err => toast.error(err.response.data.error));
-    }
+    };
 
 
     useEffect(() => {
@@ -62,57 +54,83 @@ export const AddJob = () => {
     }, [axiosInstance]);
 
     return (
-        <PrivateRoute>
-            <div className='flex-grow cen-ver relative' >
-                <form className='w-full max-w-[30rem] shadow_101_1 m-4 p-4 box-1' >
-                    <div className='text-2xl font-bold text-center' >Add a job</div>
-                    <br />
-                    <fieldset className='grid grid-cols-[1fr_2fr] gap-2' >
-                        <label className='flex justify-end items-center font-bold' >Title</label>
-                        <input type='text' name='email' placeholder='Type title'
-                            value={title} onChange={(e) => setTitle(e.target.value)}
-                        />
-
-                        <label className='flex justify-end items-center font-bold' >Photo URL</label>
-                        <input type='text' name='email' placeholder='Cover Image URL'
-                            value={photo} onChange={(e) => setPhoto(e.target.value)}
-                        />
-
-                        <label className='flex justify-end items-center font-bold' >Category</label>
-                        <select
-                            id="user-select"
-                            value={selected}
-                            onChange={handleCategory}
-                            className="rounded p-2 w-full bg-[var(--color1)] text-[var(--color2)]"
-                        >
-                            <option value="">-- Choose one --</option>
-                            {category && category.map((user) => (
-                                <option key={user._id} value={user.name}>
-                                    {user.name}
-                                </option>
-                            ))}
-                        </select>
-
-                        <label className='flex justify-end items-center font-bold' >Summary</label>
-                        <textarea
-                            id="message"
-                            value={summary}
-                            onChange={(e) => setSummary(e.target.value)}
-                            placeholder="Type Summary"
-                            rows="3"
-                            className="w-full p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                        />
-
-                    </fieldset>
-                    <br />
-                    <button className='button-1' onClick={AddJob} >Submit</button>
-                </form>
+        <div className="max-w-[700px] w-full mx-auto p-6 bg-white shadow-md rounded-lg">
+            <h2 className="text-2xl font-bold mb-4 text-center">Add New Job</h2>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
 
-                <DownWindowTag />
+                {/* Name */}
+                <div>
+                    <label className="block mb-1 font-semibold">Title</label>
+                    <input
+                        type="text"
+                        {...register("title", { required: "Name is required" })}
+                        placeholder='exa. Marketing Manager'
+                        className="w-full rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    />
+                    {errors.name && (
+                        <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+                    )}
+                </div>
 
-            </div>
-        </PrivateRoute>
+                
+
+                {/* Image */}
+                <div>
+                    <label className="block mb-1 font-semibold">Photo URL</label>
+                    <input
+                        type="text"
+                        placeholder='exa. https://expamle.com/photo.jpg'
+                        {...register("photo", { required: "It is a required field" })}
+                        className="w-full rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    />
+                    {errors.photo && (
+                        <p className="text-red-500 text-sm mt-1">{errors.photo?.message}</p>
+                    )}
+                </div>
+
+                {/* Detail */}
+                <div>
+                    <label className="block mb-1 font-semibold">Summary</label>
+                    <textarea
+                        {...register("summary", { required: "Detail is required" })}
+                        rows={5}
+                        className="w-full rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black resize-none"
+                        placeholder='exa. This job is only for college graduates.'
+                    />
+                    {errors.summary && (
+                        <p className="text-red-500 text-sm mt-1">{errors.summary?.message}</p>
+                    )}
+                </div>
+
+                <div>
+                    <label className="block mb-1 font-semibold">Category</label>
+                    <select
+                        {...register("category", { required: "Category is required" })}
+                        className="w-full  rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    >
+                        <option value="">Select a category</option>
+                        {category.map((opt) => (
+                            <option key={opt._id} value={opt.name}>
+                                {opt.name}
+                            </option>
+                        ))}
+                    </select>
+                    {errors.category && (
+                        <p className="text-red-500 text-sm mt-1">{errors.category?.message}</p>
+                    )}
+                </div>
+
+                {/* Submit */}
+                <button
+                    type="submit"
+                    className="text-white px-4 py-2  block bg-black hover:opacity-80 cursor-pointer mx-auto rounded-lg"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
     );
-};
+}
+
 

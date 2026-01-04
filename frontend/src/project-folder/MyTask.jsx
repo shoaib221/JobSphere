@@ -14,10 +14,13 @@ export const Task = ({ job, done }) => {
     const { axiosInstance } = useContext(AuthContext);
 
     function Done() {
-        axiosInstance.delete(`/product/job/${job._id}`).then( res => {
-            toast.info("Task Completed");
-            done(job);
-        }).catch(err => toast.error(err.response.data.error));
+        axiosInstance.post( "/product/complete-task", {
+            job
+        } ).then( res => {
+            toast.info( "Task Completed" );
+            done(job)
+        } )
+        .catch( err => toast.error( err.response.data.error ) )
     }
 
     function Cancel() {
@@ -31,14 +34,14 @@ export const Task = ({ job, done }) => {
     }
 
     return (
-        <div className='h-[17rem] p-2 box-1' >
+        <div className='h-[30rem] p-2 box-1 flex flex-col justify-between' >
             <div className='flex justify-between items-center mb-2 text-xl font-bold' >
                 <RxCross2 title='Cencel' onClick={Cancel} />
                 <MdOutlineDone title='Done' onClick={Done} />
             </div>
-            <div className='w-full h-[7rem] bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
-            <div className='font-bold text-xl' >{job.title} </div>
-            <div> {job.summary.substring(0, 20)} ...</div>
+            <div className='w-full h-[15rem] bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
+            <div className='font-bold' >{job.title} </div>
+            <div className='text-[.8rem]' > {job.summary.substring(0, 80)} ...</div>
             <button className='button-1' onClick={() => navigate(`/job-detail/${job._id}`)} >
                 View Detail
             </button>
@@ -140,7 +143,7 @@ export const MyTask = () => {
 
                 <br />
 
-                <div className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto p-2' >
+                <div className='grid grid-cols-[1fr] sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto p-2' >
                     {display && display.map(elem => <Task key={elem._id} job={elem} done={Completed} />)}
                 </div>
 

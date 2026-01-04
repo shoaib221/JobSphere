@@ -1,5 +1,5 @@
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createContext } from 'react';
 import { auth } from './firebase.config';
 import { toast } from 'react-toastify';
@@ -9,8 +9,10 @@ import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
-const baseURL = "https://express-practice-chi.vercel.app/";
-// const baseURL = "http://localhost:4000";
+export const useAuthContext = () => useContext( AuthContext )
+
+// const baseURL = "https://express-practice-chi.vercel.app/";
+const baseURL = "http://localhost:4000";
 
 const instance = axios.create({
     baseURL,

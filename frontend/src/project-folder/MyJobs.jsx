@@ -74,15 +74,15 @@ export const MyJobs = () => {
         <PrivateRoute>
             <div className='flex-grow relative' >
 
-                <div className='flex justify-between p-2' >
-                    <div className='text-2xl font-bold' >
+                <div className='flex flex-col lg:flex-row justify-between  p-2' >
+                    <div className='text-xl font-bold text-center' >
                         My Jobs
                     </div>
-
+                    <br/>
                     <div className='flex gap-2' >
-                        <input placeholder='Search By Category' value={categorySearch} onChange={(e) => SearchByCategory(e)} />
+                        <input className='flex-1'  placeholder='Search By Category' value={categorySearch} onChange={(e) => SearchByCategory(e)} />
 
-                        <select value={sort} onChange={(e) => SortDisplay(e)} className='bg-[var(--color1)] text-[var(--color2)]' >
+                        <select value={sort} onChange={(e) => SortDisplay(e)} className='bg-[var(--color1)] text-[var(--color2)] min-w-40' >
                             <option value="" >Sort By</option>
                             <option value="latest" >Latest</option>
                             <option value="oldest" >Oldest</option>
@@ -94,7 +94,7 @@ export const MyJobs = () => {
 
                 <br />
 
-                <div className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] gap-4 flex-grow p-4 overflow-auto' >
+                <div className='grid grid-cols-[1fr] sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] gap-4 flex-grow p-4 overflow-auto' >
                     {display && display.map(job => <Job key={job._id} job={job} />)}
                 </div>
 

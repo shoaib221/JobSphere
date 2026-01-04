@@ -6,8 +6,8 @@
     align-items: center;
     padding: .5rem;
     border-radius: .5rem;
-    background-color: var(--color1);
-    color: var(--color2);
+    background-color: var(--color2);
+    color: var(--color1);
     margin: .5rem;
     min-width: 5rem;
     margin-left: auto;
@@ -19,8 +19,7 @@
 
 
 .button-1:hover {
-    background-color: var(--color2);
-    color: var(--color1);
+    opacity: .8;
 }
 
 
@@ -36,4 +35,25 @@
     margin: .5rem;
     cursor: pointer;
     gap: .5rem;
+}
+
+.button-3 {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .5rem;
+    border-radius: .5rem;
+    background-color: var(--color2);
+    color: var(--color1);
+    margin: .5rem;
+    min-width: 5rem;
+    
+    
+    cursor: pointer;
+    gap: .5rem;
+}
+
+.button-3:hover {
+    opacity: 0.8;
 }

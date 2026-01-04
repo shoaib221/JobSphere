@@ -1,24 +1,27 @@
+
+
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AuthContext } from '../auth/context';
+import { AuthContext, useAuthContext } from '../auth/context';
 import { DownWindowContext } from '../Nav/context';
 import { format } from "date-fns";
 import { PrivateRoute } from '../auth/auth';
 import { toast } from 'react-toastify';
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrDocumentUpdate } from "react-icons/gr";
-import { Loading } from '../miscel/Loading';
+import { Loading, LoadingFull } from '../miscel/Loading';
+import { UpdateDetail } from './UpdateJob';
+
+
+
 
 
 export const JobDetail = () => {
     const { id } = useParams()
     const [job, setJob] = useState(null)
-    const { axiosInstance } = useContext(AuthContext)
-    const { user } = useContext(AuthContext)
+    const { axiosInstance, user } = useAuthContext()
     const { DownWindow, DownWindowTag } = useContext(DownWindowContext);
-    const navigate = useNavigate();
-    const [updating, setUpdating] = useState(false)
-    const [category, setCategory] = useState([])
+    
 
 
 
@@ -26,7 +29,7 @@ export const JobDetail = () => {
         if (!user || !id) return;
         axiosInstance.get(`/product/job/${id}`)
             .then(res => {
-                //console.log(res.data)
+                console.log(res.data)
                 setJob(res.data)
             })
             .catch(err => {
@@ -34,18 +37,6 @@ export const JobDetail = () => {
             })
     }, [user, axiosInstance, id])
 
-
-    useEffect(() => {
-        axiosInstance.get('/product/category')
-            .then((data) => {
-                // Assuming each item has 'id' and 'name'
-                setCategory(data.data?.result);
-                //console.log(data.data?.result)
-            })
-            .catch((err) => {
-                //console.error("Error fetching data:", err)
-            });
-    }, [])
 
 
     function AcceptJob() {
@@ -63,142 +54,60 @@ export const JobDetail = () => {
     }
 
 
-    function DeleteJob() {
-        axiosInstance.delete(`/product/job/${job._id}`).then(res => {
-            toast.info("Job Deleted");
-            navigate("/");
-        }).catch(err => toast.error(err.response.data.error));
-    }
+    
 
-    function UpdateJob() {
-        console.log(job)
-        axiosInstance.put(`/product/job/${job._id}`, { ...job }).then(res => {
-            toast.info("Job Updated")
-            setJob(res.data.job)
-            setUpdating(false)
-            //console.log(res.data.job)
-        }).catch(error => toast.error(error.response.data.error));
-    }
+    if (!job || !user) return <LoadingFull />
 
-    function WatchChange(key, value) {
-        let abc = { ...job };
-        abc[key] = value;
-        //console.log( abc )
-        setJob(abc);
-    }
+    if (job.ownerEmail !== user.email) return (
+        <div className='flex-grow flex flex-col lg:flex-row gap-2' >
 
+            <div className='rounded-xl mx-2  lg:min-w-90 lg:w-90 h-60 lg:h-72 bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} ></div>
+            <div className='flex-grow p-2' >
+                <div className='font-bold text-2xl' > {job.title} </div>
+                <div>
+                    by {job.postedBy}
+                </div>
+                <button className='text-(--color1) bg-(--color2) p-1 rounded-lg text-[.8rem]' >
+                    {job.category}
+                </button>
 
+                <div className='border-t-2  my-2 border-gray-300' ></div>
 
-    return (
-        <PrivateRoute>
-            <div className='flex-grow flex justify-center items-center relative' >
-                <div className='w-full max-w-[600px] flex flex-col items-center box-1 p-4' >
-                    {job && <>
-                        <div className='flex flex-col md:flex-row justify-center items-center w-full gap-2' >
-                            <div className='bg-cover bg-center min-h-[10rem] min-w-[10rem] rounded-full' style={{ backgroundImage: `url(${job.coverImage})` }} >
+                <div className='font-bold' > About this job </div>
 
-                            </div>
-                            <div className='w-full' >
-                                <div className='text-2xl font-bold flex justify-between' >
-                                    <div>{job.title}</div>
-                                    {job.ownerEmail === user.email && <RiDeleteBin6Line title='Delete' onClick={DeleteJob} />}
+                <div> {job.summary} </div>
 
-                                </div>
+                <div className='font-bold' > Contact with the owner </div>
 
-                                <div>
-                                    Posted By <span className='font-bold' > {job.postedBy} </span>
-                                </div>
+                <div> {job.ownerEmail} </div>
+                <br />
 
-                                <div className='flex gap-4 p-2 text-2xl' >
-                                </div>
-                            </div>
-                        </div>
-
-                        <br />
-
-                        {updating ?
-                            <div className='w-full' >
-                                <div className='grid grid-cols-[1fr_2fr] w-full gap-4'>
-
-                                    <label className='font-bold flex flex-row-reverse items-center' >Title</label>
-                                    <input maxLength="20" value={job.title} onChange={(e) => WatchChange("title", e.target.value)} placeholder='Maximum twenty characters' />
-
-                                    <label className='font-bold flex flex-row-reverse items-center' >Category</label>
-                                    <select value={job.category} className='bg-[var(--color1)] text-[var(--color2)]' >
-                                        { category && category.map( cat => (
-                                            <option key={cat._id} value={cat.name} > { cat.name } </option>
-                                        ) ) }
-                                    </select>
-
-                                    <label className='font-bold flex flex-row-reverse items-center' >Cover Image</label>
-                                    <input maxLength="70" value={job.coverImage} onChange={(e) => WatchChange("coverImage", e.target.value)} placeholder='Maximum seventy characters' />
-
-                                    <label className='font-bold flex flex-row-reverse items-start' >Summary</label>
-                                    <textarea onChange={(e) => WatchChange("summary", e.target.value)} value={job.summary}
-                                        maxLength="300" rows={3} className='resize-none p-2' placeholder='Maximum 300 characters' ></textarea>
-
-                                    <div onClick={() => setUpdating(prev => !prev)} className='text-center bg-red-800 text-white p-2 rounded-md' >Cancel</div>
-                                    <div onClick={UpdateJob} className='text-center bg-green-800 text-white p-2 rounded-md' >Update</div>
-
-                                </div>
-                            </div>
-                            :
-                            <div className='w-full' >
-
-                                <div className='flex flex-row-reverse text-xl' >
-                                    {job.ownerEmail === user.email && <GrDocumentUpdate title='Update' onClick={() => setUpdating(prev => !prev)} />}
-                                </div>
-
-
-
-                                <div className='font-bold' >Summary</div>
-                                <div className='italic' > {job.summary} </div>
-
-                                <br />
-
-                                <div className='font-bold' >Category</div>
-                                <div className='italic' >  {job.category} </div>
-
-                                <br />
-
-                                {job.acceptedBy !== 'none' && <>
-                                    <div className='font-bold' > Accepted By   </div>
-                                    <div className='italic' > {job.acceptedBy} </div>
-                                    <br />
-                                </>}
-
-
-
-                                <div className='font-bold' >Contact  </div>
-                                <div className='italic' > {job.ownerEmail} </div>
-
-                                <br />
-
-                                <div className='font-bold' > Last updated </div>
-                                <div className='italic' >     {format(job.updatedAt, "MMM do, yyyy")}</div>
-
-                                <br />
-
-                                {job.acceptedBy === 'none' && job.ownerEmail !== user.email &&
-                                    <button className='button-1' onClick={AcceptJob} > Accept </button>
-                                }
-
-                            </div>
-                        }
-
-
-
-                    </>}
+                <div>
+                    Job created at: {job.createdAt}
 
                 </div>
 
+                <div>
+                    Last updated at: {job.updatedAt}
 
-                <DownWindowTag />
+                </div>
 
+                <div className='border-t-2  my-2 border-gray-300' ></div>
+
+                { job.status === 'initial' && <button className='button-3' onClick={AcceptJob} >Accept This Job</button> }
+                { job.status === 'pending' && <p> Being done by { job.acceptedBy } </p> }
+                { job.status === 'done' && <p> Completed by { job.acceptedBy } </p> }
+                
+
+                {/* <div className='max-w-30 w-30' >{ JSON.stringify( job ) } </div> */}
 
             </div>
-        </PrivateRoute>
-    );
+
+        </div>
+    )
+
+    return <UpdateDetail job={job} />
+
 };
 
 

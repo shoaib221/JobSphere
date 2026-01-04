@@ -20,16 +20,16 @@ export const Entry = () => {
     return (
         <>
             <Nav />
-            <div className='flex-grow flex gap-4' >
-                <div className='flex-col min-w-[10rem] gap-4 px-4 hidden md:flex' >
-                    <div className={"p-2 rounded-[.5rem] " + (navi === "home" ? "active-navi" : "")} onClick={() => navigate('/')} >Home</div>
-                    <div className={"p-2 rounded-[.5rem] " + (navi === 'all-jobs' ? 'active-navi' : '')} onClick={() => navigate('/all-jobs')} >All Jobs</div>
+            <div className='flex-grow  flex gap-4 items-start' >
+                <div className='h-full sticky top-1 flex-col min-w-[15rem] gap-4 px-4 hidden lg:flex border-r-2 border-gray-200' >
+                    <div className={`navi-pf   ${navi === "home" ? "active-navi" : ""}`} onClick={() => navigate('/')} >Home</div>
+                    <div className={`navi-pf ${navi === 'all-jobs' ? 'active-navi' : ''}`  } onClick={() => navigate('/all-jobs')} >All Jobs</div>
                     
 
                     {user && <>
-                        <div className={"p-2 rounded-[.5rem] " + (navi === 'add-job' ? 'active-navi' : '')} onClick={() => navigate('/add-job')} >Add Job</div>                        
-                        <div className={"p-2 rounded-[.5rem] " + (navi === 'my-jobs' ? 'active-navi' : '')} onClick={() => navigate('/my-jobs')} >My Jobs</div>
-                        <div className={"p-2 rounded-[.5rem] " + (navi === 'my-task' ? 'active-navi' : '')} onClick={() => navigate('/my-task')} >My Tasks</div>
+                        <div className={`navi-pf ${navi === 'add-job' ? 'active-navi' : ''}`} onClick={() => navigate('/add-job')} >Add Job</div>
+                        <div className={`navi-pf ${navi === 'my-jobs' ? 'active-navi' : ''}`} onClick={() => navigate('/my-jobs')} >My Jobs</div>
+                        <div className={`navi-pf ${navi === 'my-task' ? 'active-navi' : ''}`} onClick={() => navigate('/my-task')} >My Tasks</div>
                     </>}
 
                 </div>

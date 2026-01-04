@@ -1,7 +1,7 @@
-const express = require("express");
-const productRouter = express.Router();
-const { Category, Job } = require("./model");
-const { requireAuth } = require("../auth/middlewire");
+import express from "express";
+export const productRouter = express.Router();
+import { Category, Job } from "./model.js";
+import { requireAuth } from "../auth/middlewire.js";
 
 
 const FetchCategory = async ( req, res, next ) => {
@@ -17,21 +17,20 @@ const FetchCategory = async ( req, res, next ) => {
 
 const AddJob = async (req, res, next) => {
 
-    const { title, photo, summary, selected } = req.body;
+    const { title, photo, summary, category } = req.body;
     let new_job =  {
-        title, coverImage: photo, summary, category: selected, postedBy: req.name, ownerEmail: req.user_email,
+        title, coverImage: photo, summary, category, postedBy: req.name, ownerEmail: req.user_email,
         acceptedBy: "none"
     }
 
     console.log(new_job);
     try {
         new_job = await Job.create(new_job )
-        res.status(200).json(new_job)
+        res.status(200).json({ job: new_job})
         
     } catch(err) {
+        console.log( err.message )
         res.status(400).json( { error: err.message } )
-    } finally {
-        next()
     }
 }
 
@@ -71,7 +70,8 @@ const AcceptJob = async ( req, res, next ) => {
         if( job.acceptedBy !== 'none' ) throw Error("Already Alloted")
         //console.dir(job)
         job.acceptedBy = req.user_email;
-        await job.save()
+        job.status = 'pending';
+        await job.save();
         res.status(200).json( { job } )
     } catch(err) {
         console.dir(err)
@@ -160,6 +160,20 @@ const CancelTask  = async  (req, res, next) => {
     }
 }
 
+const CompleteTask = async ( req, res, next ) => {
+    console.log( "cancel task" );
+    try {
+        let { job } = req.body;
+        job = await Job.findById( job._id );
+        if( job.acceptedBy !== req.user_email ) throw Error("Not Allowed");
+        job.status = 'done';
+        await job.save();
+        res.status(200).json( { job } );
+    } catch (err) {
+        res.status(400).json( { error : err.message } );
+    }
+}
+
 
 productRouter.get( "/category", FetchCategory );
 productRouter.post( "/add-job", requireAuth, AddJob );
@@ -171,8 +185,6 @@ productRouter.get( "/my-task", requireAuth, MyTask );
 productRouter.delete( "/job/:id", requireAuth, DeleteJob );
 productRouter.put( "/job/:id", requireAuth, UpdateJob );
 productRouter.post( "/cancel-task", requireAuth, CancelTask );
+productRouter.post( "/complete-task", requireAuth, CompleteTask )
 
-
-
-module.exports = { productRouter };
 

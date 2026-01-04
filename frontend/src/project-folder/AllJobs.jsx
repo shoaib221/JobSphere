@@ -12,15 +12,18 @@ export const Job = ({ job }) => {
     const navigate = useNavigate();
 
     return (
-        <div className='h-[15rem] p-2 box-1' >
-            <div className='w-full h-[7rem] bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
+        <div className='h-[30rem] flex flex-col justify-between box-1' >
+
+            <div className='w-full h-[15rem] bg-cover bg-center' style={{ backgroundImage: `url(${job.coverImage})` }} >  </div>
             <div className='font-bold' >{job.title} </div>
-            <div className='text-[.8rem] italic' > {job.summary.substring(0, 20)} ...</div>
+            <div className='text-[.8rem] italic' > {job.summary.substring(0, 80)} ...</div>
+
             <div className='flex text-[.7rem] justify-between' >
                 <div className='flex gap-1 items-center' > <IoPerson /> {job.postedBy} </div>
                 <div className='flex gap-1 items-center' > {job.category} <BiCategory /> </div>
             </div>
-            <button className='button-1' onClick={() => navigate(`/job-detail/${job._id}`)} >
+
+            <button className='button-1 bg-black' onClick={() => navigate(`/job-detail/${job._id}`)} >
                 View Detail
             </button>
         </div>
@@ -115,7 +118,7 @@ export const AllJobs = () => {
 
             <br/ >
 
-            <div className='grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto p-2' >
+            <div className='grid grid-cols-[1fr] sm:grid-cols-[1fr_1fr] lg:grid-cols-[1fr_1fr_1fr] gap-4 flex-grow px-4 overflow-auto p-2' >
                 {display && display.map(job => <Job key={job._id} job={job} />)}
             </div>
 
