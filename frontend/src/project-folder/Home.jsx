@@ -67,9 +67,11 @@ export const Home = () => {
 
 
 
-            <br /><br /><br />
+            <br /><br />
 
             <div className='text-2xl font-bold text-center' >Hear From Users</div>
+
+            <br />
 
             <ScrollProduct />
 

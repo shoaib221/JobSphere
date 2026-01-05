@@ -29,7 +29,7 @@ export function InfiniteSlider() {
     
 
     return (
-        <div className="w-full p-4 h-60">
+        <div className="w-full p-4 h-40">
             <Swiper
                 
                 className="h-full"

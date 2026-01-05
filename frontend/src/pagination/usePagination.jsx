@@ -27,7 +27,7 @@ export const usePage = ({ baseURL }) => {
             setJobs(response.data.jobs)
         } catch (err) {
 
-            console.error(err.response.data.error)
+            console.error(err.response)
             return null;
         }
     }
@@ -56,9 +56,9 @@ export const SearchTag = ({ sortOrder, setSortOrder, searchBy, setSearchBy,
                     onChange={(e) => setSortOrder(e.target.value)}
                     className="min-w-32"
                 >
-                    <option value={-1}>Sort By</option>
-                    <option value={1}>Oldest</option>
-                    <option value={-1}>Newest</option>
+                    <option value="des" >Sort By</option>
+                    <option value="asc" >Oldest</option>
+                    <option value="des" >Newest</option>
                 </select>
 
                 <select

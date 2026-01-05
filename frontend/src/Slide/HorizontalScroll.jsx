@@ -128,7 +128,7 @@ export const ScrollProduct = () => {
 
     return (
 
-        <div className='flex overflow-auto h-120 gap-2 px-2' >
+        <div className='flex overflow-auto h-120 gap-2 mx-4' >
             {stories && stories.map((story, index) => <Story key={index} story={story} />)}
         </div>
 
