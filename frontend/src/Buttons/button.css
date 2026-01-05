@@ -57,3 +57,23 @@
 .button-3:hover {
     opacity: 0.8;
 }
+
+
+.button-4 {
+    padding: .5rem;
+    box-shadow:
+        0 0 .5rem var(--shadow-1),
+        0 0 1rem var(--shadow-2);
+    border-radius: .5rem;
+    cursor: pointer;
+    min-width: 3rem;
+}
+
+.button-4:hover {
+    opacity: .8;
+}
+
+.button-4a {
+    background-color: var(--color2);
+    color: var(--color1);
+}

@@ -27,9 +27,11 @@ export const UpdateDetail = ({ job }) => {
 
     const onSubmit = async (data) => {
         try {
-            let res = await axiosInstance.post("/product/add-job", data);
+            let url = await uploadPhoto();
+            console.log(url)
+            let res = await axiosInstance.post("/product/update_job",  { ...job, ...data, coverImage: url } );
             console.log(res.data)
-            reset();
+            //reset();
             toast.success("Succesfully Added")
         } catch (err) {
             console.log(err.message)
@@ -123,11 +125,13 @@ export const UpdateDetail = ({ job }) => {
                     type="submit"
                     className="text-white px-4 py-2  block bg-black hover:opacity-80 cursor-pointer mx-auto rounded-lg"
                 >
-                    Submit
+                    Update
                 </button>
             </form>
 
             <div className="w-full border-t-2 my-4 border-gray-300" ></div>
+
+            <div className="font-bold" >Job Status</div>
 
             { job.status === 'done' && <p>Completed by { job.acceptedBy }</p> } 
             { job.status === 'pending' && <p> Being done by { job.acceptedBy } </p> }

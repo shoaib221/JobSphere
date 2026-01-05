@@ -7,36 +7,26 @@ import { AuthContext } from '../auth/context.jsx';
 import { motion } from 'framer-motion';
 import { Banner1 } from '../Banner/banner1.jsx';
 import { InfiniteSlider } from '../Swiper/slide1.jsx';
+import { usePage } from '../pagination/usePagination.jsx';
+import { ScrollProduct } from '../Slide/HorizontalScroll.jsx';
 
 
 
 export const Home = () => {
-    const { axiosInstance } = useContext(AuthContext)
-    const [jobs, setJobs] = useState([])
+
     const [category, setCategory] = useState([])
     const navigate = useNavigate()
+
+    const { axiosInstance, user } = useContext(AuthContext)
     const { DownWindow, DownWindowTag } = useContext(DownWindowContext)
-    const { user } = useContext(AuthContext)
+    const { jobs, Search } = usePage({ baseURL: '/product/all-jobs' })
+    
 
 
     useEffect(() => {
 
-        axiosInstance.get("/product/all-jobs").then(res => {
-            let abc = res.data.jobs;
-            abc.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // newest first
-            abc.length = Math.min(abc.length, 6)
-            setJobs(abc)
-
-            axiosInstance.get("/product/category").then(res => {
-                setCategory(res.data.result)
-            }).catch(err => {
-                //console.dir(err)
-            })
-
-        }).catch(err => {
-            //console.log(err)
-        })
-
+        Search();
+        
     }, [axiosInstance])
 
     return (
@@ -72,12 +62,16 @@ export const Home = () => {
             <br /><br /><br />
 
             <div className='text-2xl font-bold text-center' >Top Job Categories</div>
-            <br/>
+            <br />
             <InfiniteSlider />
 
 
 
             <br /><br /><br />
+
+            <div className='text-2xl font-bold text-center' >Hear From Users</div>
+
+            <ScrollProduct />
 
             <DownWindowTag />
 

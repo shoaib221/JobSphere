@@ -7,12 +7,14 @@ import { PrivateRoute } from '../auth/auth';
 import { DownWindowContext } from '../Nav/context';
 import { useAuthContext } from '../auth/context';
 import { useForm } from "react-hook-form";
+import { useMyImage } from '../media/image';
 
 
 
 export function AddJob() {
-    const { axiosInstance } = useAuthContext()
+    const { axiosInstance } = useAuthContext();
     const [category, setCategory] = useState([]);
+    const { PhotoTag, uploadPhoto, resetPhoto } = useMyImage({});
 
     const {
         register,
@@ -30,8 +32,10 @@ export function AddJob() {
 
     const onSubmit = async (data) => {
         try {
-            let res = await axiosInstance.post("/product/add-job", data);
+            let photo  = await uploadPhoto();
+            let res = await axiosInstance.post("/product/add-job", {...data, photo } );
             console.log( res.data )
+            resetPhoto();
             reset();
             toast.success("Succesfully Added")
         } catch(err ) {
@@ -57,7 +61,9 @@ export function AddJob() {
         <div className="max-w-[700px] w-full mx-auto p-6 bg-white shadow-md rounded-lg">
             <h2 className="text-2xl font-bold mb-4 text-center">Add New Job</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <PhotoTag />
 
+                <br/>
 
                 {/* Name */}
                 <div>
@@ -74,21 +80,6 @@ export function AddJob() {
                 </div>
 
                 
-
-                {/* Image */}
-                <div>
-                    <label className="block mb-1 font-semibold">Photo URL</label>
-                    <input
-                        type="text"
-                        placeholder='exa. https://expamle.com/photo.jpg'
-                        {...register("photo", { required: "It is a required field" })}
-                        className="w-full rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
-                    />
-                    {errors.photo && (
-                        <p className="text-red-500 text-sm mt-1">{errors.photo?.message}</p>
-                    )}
-                </div>
-
                 {/* Detail */}
                 <div>
                     <label className="block mb-1 font-semibold">Summary</label>

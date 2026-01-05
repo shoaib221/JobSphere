@@ -1,64 +1,63 @@
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import React, { useContext, useEffect, useState } from 'react';
-import { createContext } from 'react';
-import { auth } from './firebase.config';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import React, { createContext, useContext, useEffect, useState, useRef } from "react";
+import { auth } from "./firebase.config";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
+export const useAuthContext = () => useContext(AuthContext);
 
-export const useAuthContext = () => useContext( AuthContext )
+// const baseURL = "http://localhost:4000";
+const baseURL = "https://express-practice-chi.vercel.app/";
 
-// const baseURL = "https://express-practice-chi.vercel.app/";
-const baseURL = "http://localhost:4000";
 
-const instance = axios.create({
+const axiosInstance = axios.create({
     baseURL,
-    headers: {
-        "Content-Type": "application/json"
-    }
+    headers: { "Content-Type": "application/json" },
 });
-
-const api = axios.create({
-    baseURL
-})
 
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate()
-    let requestInterceptor=null, responseInterceptor=null;
+    const navigate = useNavigate();
 
-    function LogOut() {
-        signOut(auth).then(() => {
-            setUser(null);
-        }).catch((error) => {
-            toast.error(error.message);
-        });
-    }
+    // Store interceptor references
+    const interceptors = useRef({ req: null, res: null });
 
-    function SetInterceptor(preUser) {
-        requestInterceptor = instance.interceptors.request.use(
+    //  Logout function
+    const LogOut = () => {
+        signOut(auth)
+            .then(() => {
+                setUser(null);
+            })
+            .catch((error) => toast.error(error.message));
+    };
+
+    //  Attach interceptors only once per login
+    const setupInterceptors = (firebaseUser) => {
+        // Remove old interceptors if exist
+        if (interceptors.current.req !== null) {
+            axiosInstance.interceptors.request.eject(interceptors.current.req);
+            axiosInstance.interceptors.response.eject(interceptors.current.res);
+        }
+
+        // REQUEST → Attach token
+        interceptors.current.req = axiosInstance.interceptors.request.use(
             (config) => {
-                if (preUser?.accessToken) {
-                    config.headers.authorization = `Bearer ${preUser.accessToken}`;
-                    // console.log("Added token:", user.accessToken);
+                if (firebaseUser?.accessToken) {
+                    config.headers.authorization = `Bearer ${firebaseUser.accessToken}`;
                 }
-                setUser(preUser)
                 return config;
             },
             (error) => Promise.reject(error)
         );
 
-        // ✅ Response interceptor
-        responseInterceptor = instance.interceptors.response.use(
+        // RESPONSE → Handle 401/403
+        interceptors.current.res = axiosInstance.interceptors.response.use(
             (response) => response,
             (error) => {
-                // console.log("Interceptor error:", error);
-
                 if (
                     error.response &&
                     (error.response.status === 401 || error.response.status === 403)
@@ -66,51 +65,66 @@ export const AuthProvider = ({ children }) => {
                     LogOut();
                     navigate("/auth");
                 }
-
                 return Promise.reject(error);
             }
         );
+    };
 
-        return () => {
-            instance.interceptors.request.eject(requestInterceptor);
-            instance.interceptors.response.eject(responseInterceptor);
+    
+    const handleUserLogin = async (firebaseUser) => {
+        console.log("handle user login")
+        if (!firebaseUser) {
+            // Not logged in
+            setUser(null);
+            setLoading(false);
+            return;
         }
-    }
 
+        // Setup interceptors first
+        setupInterceptors(firebaseUser);
+
+        console.log(firebaseUser);
+
+        try {
+            // Fetch or create user from backend
+            const res = await axiosInstance.post("/auth/fb-register", firebaseUser);
+
+            const fullUser = {
+                ...firebaseUser,
+                role: res.data.user.role, // attach role
+            };
+
+            //console.log("Logged in user:", fullUser);
+
+            setUser(fullUser);
+        } catch (err) {
+            console.error(err);
+            //toast.error("Failed to fetch user role");
+            setUser(firebaseUser); // fallback
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    //  Auth state listener
     useEffect(() => {
-        let aha = null;
-        
-
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            // currentUser - accessToken, displayName, email, emailVerified, 
-
-            
-            if (!currentUser) {
-                setLoading(false);
-                return
-            }
-
-            aha = SetInterceptor(currentUser)
-
-            setUser(currentUser);
-            setLoading(false)
-        })
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            setLoading(true);
+            handleUserLogin(firebaseUser);
+        });
 
         return () => {
             unsubscribe();
-            aha();
-        }
-    }, [])
+        };
+    }, []);
 
-    const Info = {
-        user, setUser, loading, setLoading, LogOut, axiosInstance: instance
-    }
+    const value = {
+        user,
+        loading,
+        LogOut,
+        axiosInstance,
+        setUser
+    };
 
-    return (
-        <AuthContext.Provider value={Info} >
-            {children}
-        </AuthContext.Provider>
-    );
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
-

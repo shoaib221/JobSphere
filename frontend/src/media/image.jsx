@@ -1,13 +1,21 @@
 import {  useState } from "react";
 import { useAuthContext } from "../auth/context";
 import { FaRegSmile } from "react-icons/fa";
+import { GrUploadOption } from "react-icons/gr";
+import axios from "axios";
 
 
-export const useMyImage = ({ url }) => {
+
+export const useMyImage = ({ url  }) => {
 
     const {  axiosInstance } = useAuthContext();
     const [photo, setPhoto] = useState(url);
     const [imageFile, setImageFile] = useState(null);
+
+    function resetPhoto () {
+        setImageFile(null)
+        setPhoto( null );
+    }
 
 
     async function Upload() {
@@ -30,18 +38,20 @@ export const useMyImage = ({ url }) => {
                 const formData = new FormData();
                 formData.append("image", base64Img);
 
-                const res = await axiosInstance.post(
+                const res = await axios.post(
                     `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_Imagebb}`,
                     formData
                 );
 
                 const imageUrl = res.data.data.display_url;
                 setPhoto(imageUrl);
+                setImageFile(null);
+                console.log("image uploaded to cloud")
                 return imageUrl;
                 
             }
 
-            return null;
+            return photo;
             
         } catch (error) {
             console.error(error);
@@ -62,20 +72,23 @@ export const useMyImage = ({ url }) => {
 
     const Tag = () => {
         return (
-            <div className="bg-cover bg-center h-60 w-full relative rounded-xl"
-                style={{ backgroundImage: `url(${photo})` }} >
+            <div className="bg-cover bg-center h-60 w-full relative rounded-xl" style={{ backgroundImage: `url(${photo})` }} >
 
-                <div className="rounded-full  absolute -bottom-5 right-[45%] cursor-pointer" >
-                    <button className="button-1" >Update Image</button>
-                    <input type="file" onChange={imageChange} className="opacity-0 absolute inset-0 h-full w-full" />
+                <div className="absolute rounded-full -bottom-5 right-[45%] bg-(--color1) cursor-pointer cen-ver" >
+                    { !photo && <div> Upload a photo </div> }
+                    <GrUploadOption className="text-3xl cursor-pointer" />
+                    <input type="file" onChange={imageChange} className="opacity-0 absolute cursor-pointer inset-0 h-full w-full" />
                 </div>
+                
             </div>
         )
+
+        
     }
 
 
 
-    return {  PhotoTag: Tag, uploadPhoto: Upload }
+    return {  PhotoTag: Tag, uploadPhoto: Upload, resetPhoto }
 
 
 }

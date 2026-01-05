@@ -45,18 +45,16 @@ export function InfiniteSlider() {
                 spaceBetween={20}
                 allowTouchMove={false}
                 breakpoints={{
-                    640: { slidesPerView: 3 },
-                    1024: { slidesPerView: 6 },
+
+                    640: { slidesPerView: 2 },
+                    1024: { slidesPerView: 4 },
                 }}
             >
                 {scholarships && scholarships.map((elem) => (
                     <SwiperSlide key={elem._id} className="h-full" >
                         <div
-                            className=""
-                            style={{
-                                backgroundImage: `url(${elem.image})`, backgroundSize: "cover", height: "100%",
-                                backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundColor: 'var(--color1)', textAlign: 'center'
-                            }}
+                            className="button-1 h-24 cen-ver"
+                            
                         >
                             {elem.name}
                         </div>

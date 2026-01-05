@@ -54,7 +54,7 @@ export const Nav = () => {
 
             {/* <div onClick={ () => navigate('/') } style={{ cursor: 'pointer' }} className={ `${location.pathname === '/'? 'hilit-1': ''}` } >Home</div> */}
 
-            <div className='flex justify-center text-2xl px-6 items-center md:hidden' onClick={ DownWindow } >
+            <div className='flex justify-center text-2xl px-6 items-center lg:hidden' onClick={ DownWindow } >
                 { down1 ? <FaChevronDown /> :  <FaChevronUp /> }
             </div>
 

@@ -13,3 +13,12 @@ export const TimeDate = () => {
     );
 };
 
+export const TimeDate1 = ( { date } ) => {
+
+    return (
+        <span>{format(date , "MMMM do, yyyy")}</span>
+        
+    );
+
+}
+

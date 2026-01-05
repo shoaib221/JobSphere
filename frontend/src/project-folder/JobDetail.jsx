@@ -11,6 +11,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { GrDocumentUpdate } from "react-icons/gr";
 import { Loading, LoadingFull } from '../miscel/Loading';
 import { UpdateDetail } from './UpdateJob';
+import { TimeDate1 } from '../miscel/TimeDate';
 
 
 
@@ -77,22 +78,26 @@ export const JobDetail = () => {
 
                 <div> {job.summary} </div>
 
-                <div className='font-bold' > Contact with the owner </div>
+                <br/>
 
-                <div> {job.ownerEmail} </div>
-                <br />
+                <div  > Contact: {job.ownerEmail} </div>
+
+                
+                
 
                 <div>
-                    Job created at: {job.createdAt}
+                    Job created at: <TimeDate1  date={job.createdAt} />
 
                 </div>
 
                 <div>
-                    Last updated at: {job.updatedAt}
+                    Last updated at:  <TimeDate1  date={job.updatedAt} />
 
                 </div>
 
                 <div className='border-t-2  my-2 border-gray-300' ></div>
+
+                <div className='font-bold' >Job Status</div>
 
                 { job.status === 'initial' && <button className='button-3' onClick={AcceptJob} >Accept This Job</button> }
                 { job.status === 'pending' && <p> Being done by { job.acceptedBy } </p> }
